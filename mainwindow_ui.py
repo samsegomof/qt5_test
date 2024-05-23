@@ -12,7 +12,13 @@ from PyQt5 import QtCore, QtWidgets
 
 
 class UiMainWindow(object):
-    def setupUi(self, MainWindow):
+    """
+        Sets up the UI for the main window.
+
+        Args:
+            MainWindow (QMainWindow): The main window instance.
+    """
+    def setupUi(self, MainWindow: QtWidgets.QMainWindow) -> None:
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -60,7 +66,13 @@ class UiMainWindow(object):
         self.current_directory = os.getcwd()
         self.display_directory(self.current_directory)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, MainWindow: QtWidgets.QMainWindow) -> None:
+        """
+            Sets the text for UI elements.
+
+            Args:
+                MainWindow (QMainWindow): The main window instance.
+        """
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "File Explorer"))
         self.refreshButton.setText(_translate("MainWindow", "Refresh"))
@@ -68,16 +80,32 @@ class UiMainWindow(object):
         self.exitButton.setText(_translate("MainWindow", "Exit"))
         self.menuExplorer.setTitle(_translate("MainWindow", "Explorer"))
 
-    def display_directory(self, directory):
+    def display_directory(self, directory: str) -> None:
+        """
+            Displays the contents of the given directory in the directory list widget.
+
+            Args:
+                directory (str): The path of the directory to display.
+        """
         self.pathLineEdit.setText(directory)
         self.directoryListWidget.clear()
         for item in os.listdir(directory):
             self.directoryListWidget.addItem(item)
 
-    def refresh_directory(self):
+    def refresh_directory(self) -> None:
+        """
+            Refreshes the directory view based on the path in the path line edit.
+        """
         self.display_directory(self.pathLineEdit.text())
 
-    def open_item(self, item):
+    def open_item(self, item: QtWidgets.QListWidgetItem) -> None:
+        """
+            Opens the selected item. If it is a directory, displays its contents.
+            If it is a file, displays its content in the text edit widget.
+
+            Args:
+                item (QListWidgetItem): The item that was double-clicked.
+        """
         path = os.path.join(self.pathLineEdit.text(), item.text())
         if os.path.isdir(path):
             self.display_directory(path)
@@ -86,6 +114,9 @@ class UiMainWindow(object):
                 self.fileContentTextEdit.setPlainText(f.read())
 
     def go_back(self):
+        """
+            Goes back to the parent directory of the current path.
+        """
         parent_dir = os.path.dirname(self.pathLineEdit.text())
         if os.path.exists(parent_dir):
             self.display_directory(parent_dir)
@@ -99,4 +130,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
