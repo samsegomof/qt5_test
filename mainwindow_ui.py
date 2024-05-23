@@ -113,7 +113,7 @@ class UiMainWindow(object):
             with open(path, 'r') as f:
                 self.fileContentTextEdit.setPlainText(f.read())
 
-    def go_back(self):
+    def go_back(self) -> None:
         """
             Goes back to the parent directory of the current path.
         """
